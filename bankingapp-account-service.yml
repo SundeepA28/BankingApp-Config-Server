@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: bankingapp-account-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bankingapp-account-service
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    format-sql: true
+  h2:
+    console:
+      enabled: true
+  kafka:
+    bootstrap-servers: localhost:9092
+server:
+    port: 8096
+# Eureka Configuration
+eureka:
+    client:
+      service-url:
+        default-zone: http://localhost:8761
+        register-with-eureka: true
+        fetch-registry: true
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+product-service-name: bankingapp-transaction-service
+
+approved-fund-transfer-topic: validation-approved
+
+rejected-fund-transfer-topic: validation-rejected
