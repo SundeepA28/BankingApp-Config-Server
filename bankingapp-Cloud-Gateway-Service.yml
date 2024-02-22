@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: bankingapp-Cloud-Gateway-Service
+  threads:
+    virtual:
+      enabled: true
+  cloud.gateway.mvc:
+    routesMap:
+      configRoute1:
+        uri: lb://bankingapp-account-service
+        predicates:
+          - Path=/bankingapp/api/accounts/**
+        filters:
+#          - SetPath=/accounts
+#          - RewritePath=/(?<base>.*?)/(?<segment>.*), /$\{segment}
+          - StripPrefix=2
+
+      configRoute2:
+        uri: lb://bankingapp-transaction-service
+        predicates:
+          - Path=/bankingapp/api/transactions/**
+        filters:
+          - StripPrefix=2
+#    Url : specified in the postman = http://localhost:8111/bankingapp/api/fundTransfers
+#      So what ever path is specified in the predicate. when it matches the path in the URL. The entire content after
+#  localhst:8111 will be part of the new URL.
+#      SO it is going to look like http://localhost:8093/bankingapp/api/fundTransfers/**.This is the URL of the bankingapp-fund-transfer-service
+#      Since we don't want the bankingapp/api. part in the URL, we are giong to strip the prefix using filteres.
+#      So finally, it is going to look like : http://localhost:8093/fundTransfers/**
+
+#      In the URI: lb stands for load balancer.
+      configRoute3:
+        uri: lb://bankingapp-fund-transfer-service
+        predicates:
+          - Path=/bankingapp/api/fundTransfers/**
+        filters:
+            - StripPrefix=2
+server:
+  port: 8111
+
+# Eureka Client
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+# Actuator Endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
