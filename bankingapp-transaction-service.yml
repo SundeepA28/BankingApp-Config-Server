@@ -1,29 +1,39 @@
 spring:
   application:
     name: bankingapp-transaction-service
+#  cloud:
+#    config:
+#      discovery:
+#        enabled: true
+#        service-id: bankingapp-config-service
+#  config:
+#    import: 'optional:configserver:'
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/bankingapp-transaction-service
+    url: jdbc:postgresql://transaction-db:5432/bankingapp-transaction-service
     username: postgres
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: create
-    show-sql: true
-    format-sql: true
+      ddlAuto: update
+    showSql: true
+    formatSql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   h2:
     console:
       enabled: true
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:9092
+#    bootstrap-servers: localhost:9092
 server:
   port: 8092
 # Eureka Configuration
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${REGISTRY_SERVER_HOST:localhost}:8761/eureka
+      defaultZone: http://bankingapp-registry-service:8761/eureka
       register-with-eureka: true
-      fetch-registry: false
+      fetch-registry: true
 
 # Actuator Configuration
 management:

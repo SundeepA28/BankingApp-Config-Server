@@ -1,37 +1,40 @@
 spring:
   application:
     name: bankingapp-fund-transfer-service
+    
   kafka:
-    bootstrap-servers: localhost:9092
+   bootstrap-servers: kafka:9092
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/bankingapp-fundTransfer-service
+    url: jdbc:postgresql://fund-transfer-db:5432/bankingapp-fundTransfer-service
     username: postgres
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: create
-    show-sql: true
-    format-sql: true
+      ddlAuto: update
+    showSql: true
+    formatSql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 server:
-  port: 8093
+ port: 8093
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${REGISTRY_SERVER_HOST:localhost}:8761/eureka
-    register-with-eureka: true
-    fetch-registry: false
+      defaultZone: http://bankingapp-registry-service:8761/eureka
+      register-with-eureka: true
+      fetch-registry: false
 
 management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+ endpoints:
+   web:
+     exposure:
+       include: "*"
 
 bankingapp:
-  kafka:
-    topic:
-      fund-Validation: fund-Validation
-      Transaction: transaction
+ kafka:
+   topic:
+     fund-Validation: fund-Validation
+     Transaction: transaction
 
